@@ -67,20 +67,20 @@ Nouveau projet SaaS à destination des propriétaires bailleurs qui gèrent eux-
 - Mangopay : plus complexe à intégrer, orienté marketplace
 - Approche hybride Stripe + GoCardless : complexité non justifiée en V1
 
-### 4. Signature électronique : Yousign
+### 4. Signature électronique : solution intégrée gratuite
 
-**Choix** : Yousign API pour la signature des contrats et documents.
+**Choix** : Signature intégrée à l'application — SignaturePad.js pour la capture de signature manuscrite + pdf-lib pour l'incrustation dans le PDF + workflow de consentement par email (lien unique avec token, horodatage, IP, hash du document).
 
 **Pourquoi** :
-- Entreprise française, conforme eIDAS (signature électronique avancée)
-- API simple et bien documentée
-- Tarification à l'acte adaptée au SaaS
-- Valeur juridique reconnue en France
+- **Zéro coût** : pas de service tiers payant à l'acte
+- En droit français, la signature électronique "simple" (article 1367 du Code civil) est recevable — il suffit de prouver l'identité du signataire et l'intégrité du document
+- Le workflow (email + lien unique + capture signature + horodatage + hash SHA-256 du PDF) constitue un faisceau de preuves suffisant pour les baux et contrats de location
+- Conservé en interne : le "dossier de preuve" (signature, IP, timestamp, hash) est stocké en base
 
 **Alternatives considérées** :
-- DocuSign : plus cher, overkill pour le volume attendu en V1
-- HelloSign (Dropbox Sign) : moins adapté au marché français
-- Signature manuscrite numérisée : pas de valeur juridique suffisante
+- Yousign : solution française eIDAS conforme, mais coût par signature (à partir de ~3€/signature) — non viable pour un SaaS gratuit/low-cost avec beaucoup de contrats saisonniers
+- DocuSign / HelloSign : encore plus cher, overkill
+- **Évolution possible** : proposer Yousign en option premium pour les utilisateurs qui veulent une signature électronique avancée (eIDAS), tout en gardant la solution intégrée gratuite par défaut
 
 ### 5. Calendrier et synchronisation : FullCalendar + iCal
 
@@ -121,14 +121,19 @@ Nouveau projet SaaS à destination des propriétaires bailleurs qui gèrent eux-
 - Schema par tenant (PostgreSQL schemas) : overhead opérationnel non justifié pour la V1
 - Base de données par tenant : idem, trop complexe
 
-### 8. Stockage de fichiers : S3-compatible (MinIO / AWS S3)
+### 8. Stockage de fichiers : Cloudflare R2
 
-**Choix** : Stockage objet S3-compatible pour les documents (contrats signés, photos état des lieux, pièces jointes).
+**Choix** : Cloudflare R2 pour les documents (contrats signés, photos état des lieux, pièces jointes).
 
 **Pourquoi** :
-- Scalable, économique, standard de l'industrie
+- **Free tier généreux** : 10 Go de stockage + 10 millions de requêtes de lecture/mois gratuites
+- **Zéro frais d'egress** (contrairement à AWS S3 qui facture la bande passante sortante)
+- API compatible S3 — migration facile vers un autre provider si besoin
 - Pré-signed URLs pour l'accès sécurisé aux documents
-- Compatible avec tous les providers cloud
+
+**Alternatives considérées** :
+- AWS S3 : frais d'egress qui peuvent grimper rapidement
+- Supabase Storage : free tier plus limité (1 Go), mais option viable si on utilise déjà Supabase pour la BDD
 
 ## Risks / Trade-offs
 
@@ -138,7 +143,7 @@ Nouveau projet SaaS à destination des propriétaires bailleurs qui gèrent eux-
 
 - **Synchronisation iCal non temps-réel** → Le polling iCal introduit un délai (5-15 min). Risque de double réservation. Mitigation : afficher clairement la date de dernière synchronisation, permettre un refresh manuel, avertir l'utilisateur des limites.
 
-- **Signature électronique et coûts** → Yousign facture à la signature. Pour un propriétaire avec beaucoup de locations saisonnières, les coûts peuvent s'accumuler. Mitigation : intégrer le coût dans le pricing SaaS, prévoir un mode "signature simple" (email + confirmation) pour les cas non critiques.
+- **Valeur juridique de la signature intégrée** → La signature électronique simple est recevable en France mais offre une force probante inférieure à une signature avancée (eIDAS). Mitigation : conserver un dossier de preuve complet (hash SHA-256 du document, horodatage, adresse IP, capture de signature) et proposer une option Yousign en upgrade pour les utilisateurs qui veulent une garantie juridique renforcée.
 
 - **RGPD et données sensibles** → Données personnelles des locataires, pièces d'identité, coordonnées bancaires. Mitigation : chiffrement au repos, politique de rétention, droit à l'effacement implémenté dès la V1, pas de stockage de données CB (délégué à Stripe).
 
@@ -148,12 +153,13 @@ Nouveau projet SaaS à destination des propriétaires bailleurs qui gèrent eux-
 
 Nouveau projet — pas de migration de données existantes.
 
-**Déploiement** :
-1. Vercel pour le frontend/backend Next.js
-2. PostgreSQL managé (Vercel Postgres ou Supabase)
-3. S3/R2 pour le stockage de documents
-4. Variables d'environnement pour les clés API (Stripe, Yousign)
-5. CI/CD via GitHub Actions
+**Déploiement (maximiser les free tiers)** :
+1. Vercel pour le frontend/backend Next.js (free tier : 100 Go de bande passante/mois)
+2. Supabase PostgreSQL (free tier : 500 Mo, 2 projets)
+3. Cloudflare R2 pour le stockage de documents (free tier : 10 Go)
+4. Resend pour les emails transactionnels (free tier : 3 000 emails/mois)
+5. Variables d'environnement pour les clés API (Stripe)
+6. CI/CD via GitHub Actions (free pour les repos publics, 2 000 min/mois pour les privés)
 
 **Rollback** : déploiements immutables via Vercel, rollback en un clic sur la version précédente.
 
@@ -162,5 +168,5 @@ Nouveau projet — pas de migration de données existantes.
 - **Pricing model** : freemium (1 bien gratuit) ? Abonnement mensuel par bien ? À définir.
 - **Visale / Locapass** : intégration réelle (API) ou simplement mode opératoire avec liens et rappels ? À confirmer selon la disponibilité des APIs.
 - **État des lieux** : formulaire interactif avec photos intégrées ou simple document PDF à remplir ? Impact sur la complexité du frontend.
-- **Emails transactionnels** : Resend, Postmark ou SendGrid ? À évaluer selon le volume et le coût.
+- **Emails transactionnels** : Resend retenu (free tier 3 000/mois). Suffisant pour démarrer, à réévaluer si le volume augmente.
 - **Internationalisation future** : structurer le code pour i18n dès le départ ou uniquement en français ?
