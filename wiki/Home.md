@@ -46,3 +46,4 @@ Application web SaaS pour gérer ses locations immobilières de A à Z — saiso
 | Stockage | Cloudflare R2 | Free tier (10 Go) |
 | Emails | Resend | Free tier (3 000/mois) |
 | Hébergement | Vercel | Free tier |
+| Documentation | GitHub Wiki | Gratuit (repo public) |
