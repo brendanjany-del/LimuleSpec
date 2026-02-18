@@ -15,9 +15,9 @@ Application web SaaS pour gérer ses locations immobilières de A à Z — saiso
 
 | Document | Description |
 |----------|-------------|
-| [Proposal](Proposal) | Pourquoi ce projet, quelles fonctionnalités, quel impact |
-| [Design](Design) | Architecture technique, stack, décisions |
-| [Tasks](Tasks) | Liste des 87 tâches d'implémentation |
+| [Proposal](Proposal.md) | Pourquoi ce projet, quelles fonctionnalités, quel impact |
+| [Design](Design.md) | Architecture technique, stack, décisions |
+| [Tasks](Tasks.md) | Liste des 87 tâches d'implémentation |
 
 ## Spécifications fonctionnelles
 
