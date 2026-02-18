@@ -1,0 +1,25 @@
+name: Sync Wiki
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'wiki/**'
+
+jobs:
+  sync-wiki:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Sync wiki folder to GitHub Wiki
+        uses: Andrew-Chen-Wang/github-wiki-action@v4
+        env:
+          WIKI_DIR: wiki/
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_MAIL: github-actions[bot]@users.noreply.github.com
+          GH_NAME: github-actions[bot]
