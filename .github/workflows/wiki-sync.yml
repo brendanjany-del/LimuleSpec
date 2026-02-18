@@ -2,7 +2,7 @@ name: Sync Wiki
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, 'claude/**']
     paths:
       - 'wiki/**'
 
