@@ -23,15 +23,15 @@ Application web SaaS pour gérer ses locations immobilières de A à Z — saiso
 
 | Capability | Description |
 |------------|-------------|
-| [User Auth](Spec‐User‐Auth) | Authentification, inscription, OAuth, sessions |
-| [Property Management](Spec‐Property‐Management) | Gestion des biens immobiliers |
-| [Seasonal Rental](Spec‐Seasonal‐Rental) | Location saisonnière — contrats, signature, cycle de vie |
-| [Classic Rental](Spec‐Classic‐Rental) | Location classique — bail, états des lieux, charges |
-| [Deposit and Guarantee](Spec‐Deposit‐and‐Guarantee) | Cautions, dépôts, Visale/Locapass |
-| [Payment Processing](Spec‐Payment‐Processing) | Paiements Stripe Connect |
-| [Rent Management](Spec‐Rent‐Management) | Échéances, quittances, suivi |
-| [Calendar and Sync](Spec‐Calendar‐and‐Sync) | Calendrier, blocage, iCal |
-| [Document Generation](Spec‐Document‐Generation) | Génération PDF, templates |
+| [User Auth](Spec‐User‐Auth.md) | Authentification, inscription, OAuth, sessions |
+| [Property Management](Spec‐Property‐Management.md) | Gestion des biens immobiliers |
+| [Seasonal Rental](Spec‐Seasonal‐Rental.md) | Location saisonnière — contrats, signature, cycle de vie |
+| [Classic Rental](Spec‐Classic‐Rental.md) | Location classique — bail, états des lieux, charges |
+| [Deposit and Guarantee](Spec‐Deposit‐and‐Guarantee.md) | Cautions, dépôts, Visale/Locapass |
+| [Payment Processing](Spec‐Payment‐Processing.md) | Paiements Stripe Connect |
+| [Rent Management](Spec‐Rent‐Management.md) | Échéances, quittances, suivi |
+| [Calendar and Sync](Spec‐Calendar‐and‐Sync.md) | Calendrier, blocage, iCal |
+| [Document Generation](Spec‐Document‐Generation.md) | Génération PDF, templates |
 
 ## Stack technique
 
@@ -46,4 +46,4 @@ Application web SaaS pour gérer ses locations immobilières de A à Z — saiso
 | Stockage | Cloudflare R2 | Free tier (10 Go) |
 | Emails | Resend | Free tier (3 000/mois) |
 | Hébergement | Vercel | Free tier |
-| Documentation | GitHub Wiki | Gratuit (repo public) |
+| Documentation | Markdown (specs/) | Gratuit |
