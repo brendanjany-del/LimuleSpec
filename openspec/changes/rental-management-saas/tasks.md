@@ -1,13 +1,13 @@
 ## 1. Project Setup
 
-- [ ] 1.1 Initialize Next.js project with App Router and TypeScript
-- [ ] 1.2 Configure Prisma ORM with PostgreSQL (Supabase) connection
-- [ ] 1.3 Define initial Prisma schema: User, Property, Contract, Lease, Payment, Document, Inspection, FurnitureItem, CalendarEvent models
-- [ ] 1.4 Run initial Prisma migration and seed script
-- [ ] 1.5 Configure Cloudflare R2 (S3-compatible) client for file storage with pre-signed URL helpers
-- [ ] 1.6 Configure Resend for transactional emails with base templates (verification, notification, payment link)
-- [ ] 1.7 Set up Tailwind CSS and base UI component library (layout, buttons, forms, modals, cards)
-- [ ] 1.8 Set up environment variables structure (.env.example) for Stripe, Resend, R2, database URL
+- [x] 1.1 Initialize Next.js project with App Router and TypeScript
+- [x] 1.2 Configure Prisma ORM with PostgreSQL (Supabase) connection
+- [x] 1.3 Define initial Prisma schema: User, Property, Contract, Lease, Payment, Document, Inspection, FurnitureItem, CalendarEvent models
+- [x] 1.4 Run initial Prisma migration and seed script
+- [x] 1.5 Configure Cloudflare R2 (S3-compatible) client for file storage with pre-signed URL helpers
+- [x] 1.6 Configure Resend for transactional emails with base templates (verification, notification, payment link)
+- [x] 1.7 Set up Tailwind CSS and base UI component library (layout, buttons, forms, modals, cards)
+- [x] 1.8 Set up environment variables structure (.env.example) for Stripe, Resend, R2, database URL
 
 ## 2. User Authentication (user-auth)
 
