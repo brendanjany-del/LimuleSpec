@@ -128,6 +128,6 @@
 - [x] 12.2 Add RGPD compliance: data export endpoint, account deletion with cascade, privacy policy page
 - [x] 12.3 Add responsive design pass on all pages (mobile-friendly dashboard, forms, calendar)
 - [x] 12.4 Add loading states, error boundaries, and toast notifications across the application
-- [ ] 12.5 Write E2E tests for critical flows: registration, property creation, seasonal contract + signature + payment, classic lease + inspection + rent cycle
+- [x] 12.5 Write E2E tests for critical flows: registration, property creation, seasonal contract + signature + payment, classic lease + inspection + rent cycle
 - [x] 12.6 Configure Vercel deployment with environment variables (Stripe, Resend, R2, Supabase)
-- [ ] 12.7 Set up GitHub Actions CI pipeline (lint, type-check, test, build)
+- [x] 12.7 Set up GitHub Actions CI pipeline (lint, type-check, test, build)
